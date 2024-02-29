@@ -1,0 +1,50 @@
+name: Documentation Generation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Dependencies
+        run: |
+          cd my_docusaurus_project
+          npm install
+
+      - name: Generate Documentation
+        id: generate-docs
+        run: |
+          cd my_docusaurus_project
+          npx docusaurus build
+        continue-on-error: true
+
+      - name: Update Log Document
+        run: |
+          echo "### $(TZ='Asia/Kolkata' date)" >> my_docusaurus_project/docs/log.md
+          echo "Message: $(git log --format=%B -n 1 $GITHUB_SHA)\n" >> my_docusaurus_project/docs/log.md
+          echo "Author: $(git log --format=%an -n 1 $GITHUB_SHA)\n" >> my_docusaurus_project/docs/log.md
+          echo "Author Email: $(git log --format=%ae -n 1 $GITHUB_SHA)\n" >> my_docusaurus_project/docs/log.md
+          echo "Branch: $GITHUB_REF\n" >> my_docusaurus_project/docs/log.md
+          echo "Repository: ${{ github.repository }}\n" >> my_docusaurus_project/docs/log.md
+          echo "Workflow Run ID: ${{ github.run_id }}\n" >> my_docusaurus_project/docs/log.md
+          echo "URL: [View Actions](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})\n" >> my_docusaurus_project/docs/log.md
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.email "rashishetty25@gmail.com"
+          git config --global user.name "rashishetty25"
+          git add my_docusaurus_project/docs/log.md
+          git commit -m "Update documentation log [skip ci]"
+          git push origin main
