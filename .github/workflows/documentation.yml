@@ -32,14 +32,15 @@ jobs:
 
       - name: Update Log Document
         run: |
-          echo "### $(TZ='Asia/Kolkata' date)" >> my_docusaurus_project/docs/log.md
-          echo "Message: $(git log --format=%B -n 1 $GITHUB_SHA)" >> my_docusaurus_project/docs/log.md
-          echo "Author: $(git log --format=%an -n 1 $GITHUB_SHA)" >> my_docusaurus_project/docs/log.md
-          echo "Author Email: $(git log --format=%ae -n 1 $GITHUB_SHA)" >> my_docusaurus_project/docs/log.md
-          echo "Branch: $GITHUB_REF" >> my_docusaurus_project/docs/log.md
-          echo "Repository: ${{ github.repository }}" >> my_docusaurus_project/docs/log.md
-          echo "Workflow Run ID: ${{ github.run_id }}" >> my_docusaurus_project/docs/log.md
-          echo "URL: [View Actions](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> my_docusaurus_project/docs/log.md
+          echo "### **$(TZ='Asia/Kolkata' date)**" >> my_docusaurus_project/docs/log.md
+          echo "**Message:** $(git log --format=%B -n 1 $GITHUB_SHA)" >> my_docusaurus_project/docs/log.md
+          echo "**Author:** $(git log --format=%an -n 1 $GITHUB_SHA)" >> my_docusaurus_project/docs/log.md
+          echo "**Author Email:** $(git log --format=%ae -n 1 $GITHUB_SHA)" >> my_docusaurus_project/docs/log.md
+          echo "**Branch:** $GITHUB_REF" >> my_docusaurus_project/docs/log.md
+          echo "**Repository:** ${{ github.repository }}" >> my_docusaurus_project/docs/log.md
+          echo "**Workflow Run ID:** ${{ github.run_id }}" >> my_docusaurus_project/docs/log.md
+          echo "**URL:** [View Actions](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> my_docusaurus_project/docs/log.md
+
 
       - name: Commit and Push Changes
         run: |
